@@ -28,7 +28,7 @@ This project is divided into **two parts**:
 The IoT system is built in **Cisco Packet Tracer** and demonstrates how sensors and actuators interact with a gateway and cloud server. Sensors generate events, the gateway processes them, and the cloud logs them for monitoring.
 
 ### Sensors and Actions
-- **Fire Sensor and smoke sensor** → Triggers **Sprinkler** when fire is detected.  
+- **Fire Sensor and Smoke Sensor** → Triggers **Sprinkler** when fire is detected.  
 - **CO2 Sensor** → Opens **Windows** automatically when CO2 exceeds a threshold.  
 - **Motion Sensor** → Enables **Lights** in rooms when motion is detected.  
 
