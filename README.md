@@ -1,105 +1,84 @@
-# 🔥 IoT Fire & Safety Monitoring System
+#  IoT Smart Home System
 
-This project simulates an IoT-based fire and safety monitoring system using **two parts**:
+This project is divided into **two parts**:
 
-1. **Packet Tracer Part** → Cisco Packet Tracer topology with sensors (CO2, smoke, fire, motion), actuators (alarm, sprinkler, lights), and a cloud server.  
-   - Server **name**: `moh`  
-   - Server **password**: `moh`  
-
-2. **Python Simulation Part** → A set of Python scripts that replicate the Packet Tracer behavior (sensors → gateway → cloud).
+1. **IoT System on Cisco Packet Tracer** → A simulated IoT smart environment with multiple sensors and actuators connected through a gateway to a cloud server.  
+2. **Python Simulation** → A simplified Python implementation that simulates the process with only a fire detector and a sprinkler.
 
 ---
 
 ## 📑 Table of Contents
-- [Project Description](#project-description)  
-- [Part A — Packet Tracer](#part-a--packet-tracer)  
-  - [Topology](#topology)  
-  - [Configuration Steps](#configuration-steps)  
-  - [Protocols / Messages](#protocols--messages)  
-  - [Thresholds](#thresholds)  
+- [Part A — Packet Tracer IoT System](#part-a--packet-tracer-iot-system)  
+  - [Overview](#overview)  
+  - [Sensors and Actions](#sensors-and-actions)  
+  - [System Flow](#system-flow)  
+  - [Server Configuration](#server-configuration)  
 - [Part B — Python Simulation](#part-b--python-simulation)  
-  - [Files](#files)  
+  - [Overview](#overview-1)  
+  - [How It Works](#how-it-works)  
   - [How to Run](#how-to-run)  
-  - [Example Output](#example-output)  
 - [Requirements](#requirements)  
 - [Contributors](#contributors)  
 
 ---
 
-## 📝 Project Description
-This project combines **IoT hardware simulation in Packet Tracer** with a **software simulation in Python**. The system integrates four types of sensors and triggers corresponding actuators, while also sending event logs to a central cloud server.
+## Part A — Packet Tracer IoT System
 
-- **CO2 Sensor** → Monitors CO2 concentration and alerts when above threshold (1000 ppm).  
-- **Smoke Sensor** → Detects smoke, triggers local alarm.  
-- **Fire Sensor** → Detects fire, triggers alarm + sprinkler.  
-- **Motion Sensor** → Detects human presence, enables/disables lights.  
+### Overview
+The IoT system is built in **Cisco Packet Tracer** and demonstrates how sensors and actuators interact with a gateway and cloud server. Sensors generate events, the gateway processes them, and the cloud logs them for monitoring.
 
-**Actuators**: Alarm, Sprinkler, Lights.  
-**Gateway**: Aggregates data from sensors, applies thresholds, and forwards events to the cloud.  
-**Cloud Server**: Logs, visualizes, and acknowledges events.  
+### Sensors and Actions
+- **Fire Sensor** → Triggers **Sprinkler** when fire is detected.  
+- **Smoke Sensor** → Also triggers **Sprinkler**.  
+- **CO2 Sensor** → Opens **Windows** automatically when CO2 exceeds a threshold.  
+- **Motion Sensor** → Enables **Lights** in rooms when motion is detected.  
 
----
+### System Flow
+1. **Sensors** send readouts (fire, smoke, CO2 level, motion detection) to the **Gateway**.  
+2. The **Gateway** interprets sensor values and activates actuators (sprinkler, windows, lights).  
+3. The **Gateway** also forwards events to the **Cloud Server** for logging and remote monitoring.  
 
-## Part A — Packet Tracer
-
-### Topology
-- **Edge Layer** (two rooms):
-  - Room1: Fire, Smoke, CO2 sensors  
-  - Room2: Smoke, Motion sensor  
-- **Gateway**: Home router/PC configured as TCP server.  
-- **Cloud Server**: Hostname `moh`, password `moh`.  
-
-### Configuration Steps
-- **Network Setup**:
-  - Subnet: `192.168.1.0/24`  
-  - Gateway: `192.168.1.1`  
-  - Cloud Server: `192.168.1.10` (`moh` / `moh`)  
-  - Room1 Node: `192.168.1.101`  
-  - Room2 Node: `192.168.1.102`  
-
-- **Cloud Server**:
-  - Hostname: `moh`  
-  - Password: `moh`  
-  - Enable TCP/HTTP services for event logging  
-
-- **Gateway**:
-  - TCP listener for sensors  
-  - Forwards events to cloud  
-
-### Protocols / Messages
-- **Sensor → Gateway**:
-  - `REGISTER <TYPE> <ID>`  
-  - `SMOKE ON|OFF`  
-  - `FIRE ON|OFF`  
-  - `CO2 <value>`  
-  - `MOTION <ID> ON|OFF`  
-
-- **Gateway → Cloud**:
-  - `EVENT|<timestamp>|<sensor_id>|<type>|<value>`  
-  - `ALERT|<timestamp>|CO2|<value>`  
-
-### Thresholds
-- CO2: 1000 ppm  
-- Smoke: binary (ON/OFF)  
-- Fire: binary (ON/OFF)  
-- Motion: ON enables lights  
+### Server Configuration
+- **Cloud server credentials**:  
+  - **Username**: `moh`  
+  - **Password**: `moh`  
+- The cloud server stores and displays events received from the gateway.  
 
 ---
 
 ## Part B — Python Simulation
 
-The Python part simulates the Packet Tracer setup with **socket programming**. It consists of a cloud server, a gateway, and four sensors.
+### Overview
+The Python part provides a **separate simplified implementation** that focuses on simulating the **fire detection process**.  
 
-### Files
-- `cloud_server.py` → Cloud that logs events.  
-- `gateway.py` → Manages sensors/actuators, forwards data to cloud.  
-- `fire_sensor.py` → Fire sensor simulation.  
-- `smoke_sensor.py` → Smoke sensor simulation.  
-- `co2_sensor.py` → CO2 sensor simulation.  
-- `motion_sensor.py` → Motion sensor simulation.  
-- `simulator.py` → Automates sensor events for testing.  
+It demonstrates:
+- A **Fire Detector** sending signals.  
+- A **Sprinkler** actuator being triggered by the fire signal.  
+
+### How It Works
+- The Python script uses simple socket communication to simulate how a sensor sends a fire event to the gateway.  
+- When fire is detected (`FIRE ON`), the **Sprinkler** is activated.  
+- When fire is cleared (`FIRE OFF`), the **Sprinkler** is deactivated.  
 
 ### How to Run
-1. Start cloud:
-   ```bash
-   python cloud_server.py
+1. Run the **gateway** (included in the Python script).  
+2. Run the **fire detector simulation**.  
+3. Observe the sprinkler actuator being enabled/disabled based on the detector’s input.  
+
+---
+
+## Requirements
+- **Cisco Packet Tracer** (for IoT system simulation).  
+- **Python 3.8+** (for Python simulation).  
+- Standard Python libraries:  
+  - `socket`  
+  - `threading`  
+  - `time`  
+  - `datetime`  
+
+---
+
+## Contributors
+- **Khaled Abu Libdeh**
+- **Mohammed Shamasnah**
+- **Mahmoud Duhaide**
